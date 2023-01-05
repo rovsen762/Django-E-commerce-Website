@@ -1,0 +1,74 @@
+{% extends 'partials/_base.html' %}
+
+{% load static %}
+
+{% block content  %}
+
+    <!-- Blog Section Begin -->
+    <section class="blog spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-5">
+                    <div class="blog__sidebar">
+                        <div class="mb-5 wow slideInUp" data-wow-delay="0.1s">
+                            <form method="GET" action="{% url 'search' %}">
+                                <div class="input-group">
+                                    <input type="text" class="form-control p-3" placeholder="Search" name="search">
+                                    <button type="submit"><span class="icon_search"></span></button>
+                                </div>
+                            </form>
+                        </div> 
+                        <div class="blog__sidebar__item">
+                            <h4>Categories</h4>
+                            {% for category in categories %}
+                            <ul>
+                                <li><a href="{% url  'blogs_by_category' category.slug %}">{{category.name}}</a></li>
+                            </ul>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-8 col-md-7">
+                    <div class="row">
+                        {% for blog in blogs %}
+                        <div class="col-md-6 wow slideInUp" data-wow-delay="0.1s">
+                            <div class="blog__item">
+                                <div class="blog-img position-relative overflow-hidden">
+                                    <img class="img-fluid rounded" src="{{ blog.image.url }}" style="width: 350px; height: 300px;" >
+                                </div>
+                                <div class="blog__item__text">
+                                    <ul>
+                                        <li><i class="fa fa-calendar-o"></i>{{blog.date}}</li>
+                                    </ul>
+                                    <h5><a href="{% url 'blog_detail' blog.category.slug blog.id %}">{{blog.name}}</a></h5>
+                                    <p>{{blog.description|truncatechars:100|safe}}</p>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        <div class="col-lg-12">
+                            {% if is_paginated %}
+                    
+                                {% if page_obj.number == 1 %}
+                                    <a class="btn btn-outline-info float-right" href="?page=2">Older Posts &rarr;</a>
+                                {% endif %}
+                    
+                                {% if page_obj.has_previous %}
+                                    <a class="btn btn-outline-info" href="?page={{ page_obj.previous_page_number }}">Previous &lsaquo;</a>
+                                {% endif %}
+                    
+                                {% if page_obj.has_next and page_obj.number != 1 %}
+                                    <a class="btn btn-outline-info float-right" href="?page={{ page_obj.next_page_number }}">Next&rsaquo;</a>
+                                {% endif %}
+                    
+                    
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Blog Section End -->
+
+{% endblock %}

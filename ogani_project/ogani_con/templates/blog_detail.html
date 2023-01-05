@@ -1,0 +1,68 @@
+{% extends 'partials/_base.html' %}
+
+{% load static %}
+
+{% block content  %}
+
+    <!-- Blog Details Section Begin -->
+    <section class="blog-details spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-5 order-md-1 order-2">
+                    <div class="blog__sidebar">
+                        <div class="mb-5 wow slideInUp" data-wow-delay="0.1s">
+                            <form method="GET" action="{% url 'search' %}">
+                                <div class="input-group">
+                                    <input type="text" class="form-control p-3" placeholder="Search" name="search">
+                                    <button type="submit"><span class="icon_search"></span></button>
+                                </div>
+                            </form>
+                        </div>   
+                        <div class="blog__sidebar__item">
+                            <h4>Categories</h4>
+                            {% for category in categories %}
+                            <ul>
+                                <li><a href="{% url  'blogs_by_category' category.slug %}">{{category.name}}</a></li>
+                            </ul>
+                            {% endfor %}
+                        </div>
+                        
+                        
+                        <div class="blog__sidebar__item">
+                            <h4>Recent Blogs</h4>
+                            
+                            <div class="blog__sidebar__recent">
+                                <a class="blog__sidebar__recent__item">
+                                    {% for blog in blog_recent %}
+                                    <div class="blog__sidebar__recent__item__pic" >
+                                        <img src="{{ blog.image.url }}" alt="" style="width: 60px; height: 60px;" >
+                                    </div>
+                                    <div class="blog__sidebar__recent__item__text">
+                                        <h6>{{blog.name}}<br /> {{blog.description|truncatechars:15|safe}}</h6>
+                                        <span>{{blog.date}}</span>
+                                    </div>
+                                    {% endfor %}
+                                </a>
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+                </div>
+                <div class="col-lg-8 col-md-7 order-md-1 order-1">
+                    <div class="blog__details__text">
+                        <img src="{{ blog.image.url }}" alt="" style="width: 900px; height: 450px;">
+                        <ul>
+                            <li><i class="fa fa-calendar-o"></i>{{blog.date}}</li>
+                        </ul>
+                        <br>
+                        <h3>{{blog.name}}</h3>
+                        <p>{{blog.description|safe}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Blog Details Section End -->
+
+    {% endblock %}

@@ -1,0 +1,116 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Ogani Template">
+    <meta name="keywords" content="Ogani, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Ogani | Template</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
+
+    <!-- Css Styles -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/elegant-icons.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/nice-select.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/jquery-ui.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/slicknav.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css">
+</head>
+
+<body>
+    <!-- Page Preloder -->
+    <div id="preloder">
+        <div class="loader"></div>
+    </div>
+
+
+    <!-- Header Section Begin -->
+    <header class="header">
+        <div class="header__top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6">
+                        <div class="header__top__left">
+                            <ul>
+                                <li><i class="fa fa-envelope"></i> rovsen.memmedli.762@gmail.com</li>
+                                <li>Free Shipping for all Order</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                        <div class="header__top__right">
+                            {% if user.is_authenticated %}
+                            
+                            <div class="header__top__right__social">
+                                <a href="javascript:{document.getElementById('logout').submit()}"><i class="fa fa-sign-out"></i> Logout</a>
+                                <form action="{% url 'logout' %}" method="POST" id="logout">
+                                    {% csrf_token %}
+                                    <input type="hidden">
+                                </form>
+                            </div>
+                            <div class="header__top__right__auth">
+                                <a href="{% url 'store_cart' %}"><i class="fa fa-shopping-cart"></i> Cart</a>
+                            </div>
+                            {% else %}
+                                <div class="header__top__right__social">
+                                    <a href="{% url 'register' %}"><i class="fa fa-user-plus"></i> Sign Up</a>
+                                </div>
+                                <div class="header__top__right__auth">
+                                    <a href="{% url 'login' %}"><i class="fa fa-user"></i> Login</a>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="header__logo">
+                        <a href="{% url 'index' %}"><img src="{% static 'img/logo.png' %}" alt=""></a>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <nav class="header__menu">
+                        <ul>
+                            <li class="{% if  '/' == request.path %} active {% endif %} "><a href="{% url 'index' %}">Home</a></li>
+                            <li class="{% if  'store' == request.path %} active {% endif %} "><a href="{% url 'store' %}">Store</a></li>
+                            <li class="{% if  'store_checkout' == request.path %} active {% endif %} "><a href="{% url 'store_checkout' %}">Check Out</a></li>
+                            <li class="{% if  'blogs' == request.path %} active {% endif %} "><a href="{% url 'blogs' %}">Blogs</a></li>
+                            <li class="{% if  'contact' == request.path %} active {% endif %} "><a href="{% url 'contact' %}">Contact</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- Header Section End -->
+
+    <!-- Hero Section Begin -->
+    <section class="hero">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-9">
+                    
+                    <div class="hero__item set-bg" data-setbg="{% static 'img/hero/banner.jpg' %}" style="width: 1150px; height: 300px;">
+                        <div class="hero__text">
+                            <span>FRUIT FRESH</span>
+                            <h2>Vegetable <br />100% Organic</h2>
+                            <p>Free Pickup and Delivery Available</p>
+                            <a href="{% url 'store' %}" class="primary-btn">SHOP NOW</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Hero Section End -->
