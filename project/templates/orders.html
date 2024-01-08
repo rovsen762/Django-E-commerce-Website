@@ -1,0 +1,42 @@
+{% extends 'partials/_base.html' %}
+
+{% load static %}
+
+{% block content  %}
+
+
+<div class="col-lg-12">
+    
+    <div class="myaccount-orders">
+        <h4 class="small-title">MY ORDERS</h4>
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+                <tbody>
+                    <tr>
+                        <th>ORDER ID</th>
+                        <th>DATE</th> 
+                        <th>QUANTİTY</th>
+                        <th>PRİCE</th>
+                        <th></th>
+                    </tr>
+                    {% for order in orders %}
+                    <tr>
+                        <td>{{ order.id }}</td>
+                        <td>{{ order.created_at }}</td>
+                        <td>{{ order.get_total_products_quantity }}</td>
+                        <td>$ {{ order.get_total_order_price }}</td>
+                        <td><a href="{% url 'order_detail' order.id %}" class="btn btn-dark"><span>View</span></a>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            
+        </div>
+    </div>
+        
+</div>
+
+{% endblock %}
+
+
+

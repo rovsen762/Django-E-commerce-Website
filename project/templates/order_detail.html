@@ -1,0 +1,102 @@
+{% extends 'partials/_base.html' %}
+
+{% load static %}
+
+{% block content  %}
+
+
+
+<div class="wishlist-area section-space-y-axis-100">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h4 >MY ORDER No {{order.id}}</h4>
+                <br>
+                    <div class="table-content table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th class="first-name">First Name</th>
+                                    <th class="last-name">Last Name</th>
+                                    <th class="order-city">City</th>
+                                    <th class="order-address">Address</th>
+                                    <th class="order-phone">Phone</th>
+                                    <th class="order-email">Email</th>
+                                    <th class="order-date">Created at</th>
+                                    <th class="order-date">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{{order.first_name}}</td>
+                                    <td>{{order.last_name}}</td>
+                                    <td>{{order.city}}</td>
+                                    <td>{{order.address}}</td>
+                                    <td>{{order.phone}}</td>
+                                    <td>{{order.email}}</td>
+                                    <td>{{order.created_at}}</td>
+                                    <td>{{order.get_total_order_price}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<br>
+<br>
+<br>
+
+<div class="wishlist-area section-space-y-axis-100">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                    <div class="table-content table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th class="product-thumbnail">Images</th>
+                                    <th class="cart-product-name">Products</th>
+                                    <th class="product-price">Price</th>
+                                    <th class="product-quantity">Quantity</th>
+                                    <td><a href="{% url 'orders' %}" class="btn btn-dark"><span>Back</span></a>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for order_product in order_products %}
+                                <tr>
+                                    {% for product in order_product.products.all %}
+                    
+                                        <td class="product-thumbnail">
+                                            
+                                            <img src="{{product.image.url}}" width="90px" height="90px">
+                                            
+                                        </td>
+                                        <td class="product-name">{{product.name}}</a></td>
+                                        <td class="product-price"><span class="amount">{{product.price}}</span></td>
+                                        
+                                    {% endfor %}
+                                    <td>{{order_product.quantity}}</td>
+                                    
+                                    
+                                </tr>
+                                {% endfor %}
+                                
+                                
+                            </tbody>
+                            
+                        </table>
+                        
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}

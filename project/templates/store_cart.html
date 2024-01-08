@@ -1,0 +1,140 @@
+{% extends 'partials/_base.html' %}
+
+
+{% load static %}
+
+{% block content  %}
+
+    {% csrf_token %}
+    <!-- Shoping Cart Section Begin -->
+    <section class="shoping-cart spad">
+        <div class="container">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{message.tags}}">
+                        {{message}}
+                    </div>
+                {% endfor %}
+            {% endif %}
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="shoping__cart__table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th class="shoping__product">Products</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th>Total</th>
+                                    
+                                </tr>
+                            </thead>
+                            {% for cart_item in cart_items %} 
+                            <tbody>
+                                    <tr>
+                                        <td class="shoping__cart__item">
+                                            <img src="{{ cart_item.product.image.url }}" alt=""  width="90px" height="90px" />
+                                            <h5>{{ cart_item.product.name }}</h5>
+                                        </td>
+                                        <td class="shoping__cart__total">
+                                            ${{ cart_item.product.price }}
+                                        </td>
+                                        <td class="shoping__cart__total">
+                                            <a href="#" class="btn btn-light button-minus" data-url="{% url 'decrease_cart' cart_item.product.slug %}" type="button"> <i class="fa fa-minus"></i> </a>
+                                            <span id="cart-item-quantity">{{ cart_item.quantity }}</span>
+                                            <a href="#" class="btn btn-light button-plus" type="button" data-url="{% url 'increase_cart' cart_item.product.slug %}"> <i class="fa fa-plus"></i> </a>
+                                        </td>
+                                        <td class="shoping__cart__total">
+                                            $<span>{{ cart_item.get_total_item_price|floatformat:2 }}</span>
+                                        </td>
+                                        <td class="shoping__cart__item__close">
+                                            <a href = "#"><span class="icon_close" data-url="{% url 'remove_from_cart' cart_item.product.slug %}"></span></a>
+                                        </td>
+                                    </tr>
+                            </tbody>
+                            {% endfor %}
+                            
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="shoping__cart__btns">
+                        <a href="{% url 'store' %}" class="primary-btn cart-btn">CONTINUE SHOPPING</a>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="shoping__continue">
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="shoping__checkout">
+                            <h5>Cart Total</h5>
+                            <ul>
+                                <li>Username <span>{{ customer }}</span></li>
+                                <li>Total <span>$<span id="get_total_cart_price">{{ cart_total }}</span></span></li>
+                            </ul>
+                            <a href="{% url 'order_checkout' %}" class="primary-btn">PROCEED TO CHECKOUT</a>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </section>
+    <!-- Shoping Cart Section End -->
+
+    {% endblock %}
+
+ 
+
+    {% block scripts %}
+    <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
+    <script>
+
+        const decrease_btns = document.querySelectorAll(".button-minus")
+            decrease_btns.forEach(decrease_btn=>{
+                decrease_btn.addEventListener("click", function(e){
+                    if(decrease_btn.nextElementSibling.innerText == '1'){
+                        decrease_btn.parentElement.parentElement.remove()
+                    }
+                    e.preventDefault()
+                    const minus_url = decrease_btn.getAttribute("data-url")
+                    $.get(minus_url, function(res){
+                        res = JSON.parse(res)
+                        decrease_btn.nextElementSibling.innerText = res['quantity']
+                        decrease_btn.parentElement.nextElementSibling.childNodes[1].innerText = res['total_price'].toFixed(2)
+                        document.getElementById("get_total_cart_price").innerText = res['get_total_cart_price'].toFixed(2)
+                    });
+            })
+        })
+
+        const increase_btns = document.querySelectorAll(".button-plus")
+        increase_btns.forEach(increase_btn=>{
+            increase_btn.addEventListener("click", function(e){
+                e.preventDefault()
+                const plus_url = increase_btn.getAttribute("data-url")
+                $.get(plus_url, function(res){
+                    res = JSON.parse(res)
+                    increase_btn.previousElementSibling.innerText = res['quantity']
+                    increase_btn.parentElement.nextElementSibling.childNodes[1].innerText = res['total_price'].toFixed(2)
+                    document.getElementById("get_total_cart_price").innerText = res['get_total_cart_price'].toFixed(2)
+                });
+            })
+        })
+
+        const remove_btns = document.querySelectorAll(".icon_close")
+        remove_btns.forEach(remove_btn=>{
+            remove_btn.addEventListener("click", function(e){
+                e.preventDefault()
+                const remove_url = remove_btn.getAttribute("data-url")
+                $.get(remove_url, function(res){
+                    res = JSON.parse(res)
+                    document.getElementById("get_total_cart_price").innerText = res['get_total_cart_price'].toFixed(2)
+                    remove_btn.parentElement.parentElement.parentElement.remove()
+                });
+            })
+        })
+      </script>
+    {% endblock %}
+
